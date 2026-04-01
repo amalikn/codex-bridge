@@ -38,7 +38,7 @@ Promote the already-cloned `codex-bridge` repository from the pending MCP area i
 - `README.md`
 - `src/mcp_server.py`
 - `docs/local-capability/*`
-- `docs/implementation-outcome-2026-04-01.md`
+- `docs/codex-bridge-implementation-outcome-2026-04-01.md`
 - `/Volumes/Data/_ai/_mcp/mcp-data/codex-bridge/config/.env`
 - `/Volumes/Data/_ai/_mcp/mcp-data/codex-bridge/meta/*`
 - `~/.claude.json` via `claude mcp add`
