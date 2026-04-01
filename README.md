@@ -12,7 +12,7 @@ A lightweight MCP (Model Context Protocol) server that enables AI coding assista
 ## ✨ Features
 
 - **Direct Codex CLI Integration**: Zero API costs using official Codex CLI
-- **Simple MCP Tools**: Two core functions for basic queries and file analysis
+- **Simple MCP Tools**: Three core functions for direct queries, stdin-driven analysis, and batch processing
 - **Stateless Operation**: No sessions, caching, or complex state management
 - **Production Ready**: Robust error handling with configurable timeouts (default: 90 seconds)
 - **Minimal Dependencies**: Only requires `mcp>=1.0.0` and Codex CLI
@@ -73,6 +73,25 @@ pip install -e .
 # Add to Claude Code (development)
 claude mcp add codex-bridge-dev -s user -- python -m src
 ```
+
+### Managed Local Installation (this workspace)
+
+This repo is used here as a local MCP server that exposes the local `codex`
+CLI to another MCP client. It is not primarily a server for Codex to consume.
+
+Canonical local paths for this managed install:
+
+- repo: `/Volumes/Data/_ai/_mcp/mcp_stuff/codex-bridge`
+- data: `/Volumes/Data/_ai/_mcp/mcp-data/codex-bridge`
+- runtime: `/Volumes/Data/_ai/_mcp/mcp-runtime/codex-bridge`
+- cache: `/Volumes/Data/_ai/_mcp/mcp-working-cache/codex-bridge`
+- external env file: `/Volumes/Data/_ai/_mcp/mcp-data/codex-bridge/config/.env`
+- managed venv: `/Volumes/Data/_ai/_mcp/mcp-working-cache/codex-bridge/.venv`
+- Python bytecode cache: `/Volumes/Data/_ai/_mcp/mcp-working-cache/codex-bridge/pycache`
+
+Claude Code is wired to launch the installed console script from the cache
+hosted virtualenv while sourcing the external `.env` file from the canonical
+data root. Repo-local mutable install artifacts are intentionally avoided.
 
 ## 🌐 Multi-Client Support
 
@@ -437,9 +456,10 @@ CLI bridge with stdin content for pipeline-friendly execution.
 Batch processing for multiple queries - perfect for CI/CD automation.
 
 **Parameters:**
-- `queries` (list): List of query dictionaries with 'query' and optional 'timeout'
+- `queries` (list): List of query dictionaries with 'query' and optional per-query `timeout`
 - `directory` (string): Working directory for all queries
 - `format` (string): Output format - currently only "json" supported for batch
+- `timeout` (int, optional): Default timeout in seconds used when a query omits its own timeout
 
 **Example:**
 ```python
@@ -588,3 +608,9 @@ See [CHANGELOG.md](CHANGELOG.md) for detailed version history.
 ---
 
 **Focus**: A simple, reliable bridge between Claude Code and Codex AI through the official CLI.
+
+## Local Customization Tracking
+- Local machine-specific integration, client wiring, and operational state are tracked under the external data root.
+- Local metadata path: `/Volumes/Data/_ai/_mcp/mcp-data/<name>/meta`
+- Repo-side capability contract is in `docs/local-capability/`.
+- Secrets are never stored in repo docs; only variable names and loading locations are documented.
